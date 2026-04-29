@@ -1,0 +1,11 @@
+{
+  "version": 2,
+  "dgSpecHash": "vPSF0yOYUoj0Ne1EYFSCJZnp0+ypXYGzabb2CIRDh8X2DqxuK7IyyY5QTDUa77rpzA3e3dkSbSBgqG5J5E1QnQ==",
+  "success": true,
+  "projectFilePath": "/var/home/maksim-arefev/CupheadMod/CupheadMod/CupheadMod.csproj",
+  "expectedPackageFiles": [
+    "/home/maksim-arefev/.nuget/packages/microsoft.netframework.referenceassemblies/1.0.3/microsoft.netframework.referenceassemblies.1.0.3.nupkg.sha512",
+    "/home/maksim-arefev/.nuget/packages/microsoft.netframework.referenceassemblies.net35/1.0.3/microsoft.netframework.referenceassemblies.net35.1.0.3.nupkg.sha512"
+  ],
+  "logs": []
+}

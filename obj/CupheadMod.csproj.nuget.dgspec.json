@@ -1,0 +1,53 @@
+{
+  "format": 1,
+  "restore": {
+    "/var/home/maksim-arefev/CupheadMod/CupheadMod/CupheadMod.csproj": {}
+  },
+  "projects": {
+    "/var/home/maksim-arefev/CupheadMod/CupheadMod/CupheadMod.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "/var/home/maksim-arefev/CupheadMod/CupheadMod/CupheadMod.csproj",
+        "projectName": "CupheadMod",
+        "projectPath": "/var/home/maksim-arefev/CupheadMod/CupheadMod/CupheadMod.csproj",
+        "packagesPath": "/home/maksim-arefev/.nuget/packages/",
+        "outputPath": "/var/home/maksim-arefev/CupheadMod/CupheadMod/obj/",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "/home/maksim-arefev/.nuget/NuGet/NuGet.Config"
+        ],
+        "originalTargetFrameworks": [
+          "net35"
+        ],
+        "sources": {
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net35": {
+            "targetAlias": "net35",
+            "projectReferences": {}
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "net35": {
+          "targetAlias": "net35",
+          "dependencies": {
+            "Microsoft.NETFramework.ReferenceAssemblies": {
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[1.0.3, )",
+              "autoReferenced": true
+            }
+          },
+          "runtimeIdentifierGraphPath": "/usr/lib64/dotnet/sdk/8.0.125/RuntimeIdentifierGraph.json"
+        }
+      }
+    }
+  }
+}
