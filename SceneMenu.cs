@@ -37,6 +37,15 @@ namespace CupheadMod
             "scene_level_robot",
             "scene_level_train",
             "scene_level_dice_palace_main",
+            "scene_level_dice_palace_booze",
+            "scene_level_dice_palace_chips",
+            "scene_level_dice_palace_cigar",
+            "scene_level_dice_palace_domino",
+            "scene_level_dice_palace_rabbit",
+            "scene_level_dice_palace_flying_horse",
+            "scene_level_dice_palace_roulette",
+            "scene_level_dice_palace_eight_ball",
+            "scene_level_dice_palace_flying_memory",
         };
 
         private string[] names = {
@@ -50,6 +59,15 @@ namespace CupheadMod
             "Dr. Kahl's Robot",
             "Phantom Express",
             "King Dice",
+            "Tipsy Troop",
+            "Chips Bettigan",
+            "Mr.Whezzy",
+            "Pip And Dot",
+            "Hopus Pocus",
+            "Phear Lap",
+            "Piroulette",
+            "Mangosteen",
+            "Mr.Chimes",
         };
 
         private string[] buttons = {
