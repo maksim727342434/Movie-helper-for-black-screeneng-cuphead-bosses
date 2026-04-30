@@ -7,6 +7,8 @@ namespace CupheadMod
     {
         private bool menuOpen = false;
         private int selectedIndex = 0;
+        private int scrollOffset = 0;
+        private int maxVisible = 12;
         private bool devilPhase2 = false;
         private bool blackAndWhite = false;
         private bool twoStrip = false;
@@ -61,20 +63,20 @@ namespace CupheadMod
             "King Dice",
             "Tipsy Troop",
             "Chips Bettigan",
-            "Mr.Whezzy",
+            "Mr. Whezzy",
             "Pip And Dot",
             "Hopus Pocus",
             "Phear Lap",
             "Piroulette",
             "Mangosteen",
-            "Mr.Chimes",
+            "Mr. Chimes",
         };
 
         private string[] buttons = {
             "Zoom Out",
             "Zoom In",
             "Reset Camera",
-            "B&W: OFF sadly not working",
+            "B&W: OFF",
             "2-Strip: OFF",
             "Unity Version",
         };
@@ -107,34 +109,34 @@ namespace CupheadMod
             boxStyle.normal.background = bgTex;
 
             titleStyle = new GUIStyle(GUI.skin.label);
-            titleStyle.fontSize = 22;
+            titleStyle.fontSize = 20;
             titleStyle.fontStyle = FontStyle.Bold;
             titleStyle.normal.textColor = new Color(1f, 0.85f, 0.1f);
             titleStyle.alignment = TextAnchor.MiddleCenter;
 
             labelStyle = new GUIStyle(GUI.skin.label);
-            labelStyle.fontSize = 15;
+            labelStyle.fontSize = 14;
             labelStyle.normal.textColor = new Color(0.95f, 0.85f, 0.7f);
 
             selectedStyle = new GUIStyle(GUI.skin.label);
-            selectedStyle.fontSize = 15;
+            selectedStyle.fontSize = 14;
             selectedStyle.fontStyle = FontStyle.Bold;
             selectedStyle.normal.textColor = new Color(1f, 0.85f, 0.1f);
             selectedStyle.normal.background = selectedTex;
 
             hintStyle = new GUIStyle(GUI.skin.label);
-            hintStyle.fontSize = 12;
+            hintStyle.fontSize = 11;
             hintStyle.normal.textColor = new Color(0.7f, 0.6f, 0.4f);
             hintStyle.alignment = TextAnchor.MiddleCenter;
 
             buttonStyle = new GUIStyle(GUI.skin.label);
-            buttonStyle.fontSize = 14;
+            buttonStyle.fontSize = 13;
             buttonStyle.normal.textColor = new Color(0.95f, 0.85f, 0.7f);
             buttonStyle.normal.background = buttonTex;
             buttonStyle.alignment = TextAnchor.MiddleCenter;
 
             buttonSelectedStyle = new GUIStyle(GUI.skin.label);
-            buttonSelectedStyle.fontSize = 14;
+            buttonSelectedStyle.fontSize = 13;
             buttonSelectedStyle.fontStyle = FontStyle.Bold;
             buttonSelectedStyle.normal.textColor = new Color(1f, 0.85f, 0.1f);
             buttonSelectedStyle.normal.background = buttonSelTex;
@@ -221,10 +223,22 @@ namespace CupheadMod
             if (!menuOpen) return;
 
             if (Input.GetKeyDown(KeyCode.UpArrow))
+            {
                 selectedIndex = (selectedIndex - 1 + TotalItems) % TotalItems;
+                if (selectedIndex < scrollOffset)
+                    scrollOffset = selectedIndex;
+                if (selectedIndex >= scrollOffset + maxVisible)
+                    scrollOffset = selectedIndex - maxVisible + 1;
+            }
 
             if (Input.GetKeyDown(KeyCode.DownArrow))
+            {
                 selectedIndex = (selectedIndex + 1) % TotalItems;
+                if (selectedIndex < scrollOffset)
+                    scrollOffset = 0;
+                if (selectedIndex >= scrollOffset + maxVisible)
+                    scrollOffset = selectedIndex - maxVisible + 1;
+            }
 
             if (Input.GetKeyDown(KeyCode.Return))
             {
@@ -253,7 +267,7 @@ namespace CupheadMod
                 "Spire", "TreeSpawner", "Midground", "Backgrounds",
                 "Foregrounds", "LevelArt", "Clouds", "Sky_sea",
                 "Phase2Background", "AlternateForeground", "Water",
-                "BackgroundPhase1and2",
+                "BackgroundPhase1and2", "BackgroundHandler", "Ground",
             };
 
             while (true)
@@ -292,6 +306,7 @@ namespace CupheadMod
         {
             if (!stylesInit) InitStyles();
 
+            // Фильтры
             if (blackAndWhite || twoStrip)
             {
                 Texture2D filterTex = new Texture2D(1, 1);
@@ -305,6 +320,7 @@ namespace CupheadMod
                 GUI.depth = 0;
             }
 
+            // Попап версии
             if (showVersionPopup)
             {
                 float pw = 340;
@@ -325,39 +341,55 @@ namespace CupheadMod
             if (!menuOpen) return;
 
             float w = 360;
-            float h = 750;
+            float itemH = 28;
+            float headerH = 70;
+            float footerH = 100;
+            float h = headerH + maxVisible * itemH + footerH;
             float x = Screen.width / 2f - w / 2f;
             float y = Screen.height / 2f - h / 2f;
 
             GUI.Box(new Rect(x - 4, y - 4, w + 8, h + 8), "");
             GUI.Box(new Rect(x, y, w, h), "", boxStyle);
 
-            GUI.Label(new Rect(x, y + 15, w, 30), "✦ Cuphead Black Screen Tool ✦", titleStyle);
-            GUI.Label(new Rect(x + 20, y + 50, w - 40, 20), "- - - - - - - - - - - - - - - - - -", hintStyle);
+            GUI.Label(new Rect(x, y + 12, w, 28), "✦ Cuphead Black Screen Tool ✦", titleStyle);
+            GUI.Label(new Rect(x + 20, y + 45, w - 40, 16), "- - - - - - - - - - - - - - - - - -", hintStyle);
 
-            for (int i = 0; i < names.Length; i++)
+            // Скролл индикатор
+            if (scrollOffset > 0)
+                GUI.Label(new Rect(x, y + 48, w, 16), "▲ scroll up", hintStyle);
+
+            // Видимые пункты
+            for (int i = 0; i < maxVisible; i++)
             {
-                Rect r = new Rect(x + 20, y + 75 + i * 30, w - 40, 26);
-                bool sel = selectedIndex == i;
-                GUI.Label(r, (sel ? "  ► " : "      ") + names[i], sel ? selectedStyle : labelStyle);
+                int realIdx = scrollOffset + i;
+                if (realIdx >= TotalItems) break;
+
+                Rect r = new Rect(x + 20, y + headerH + i * itemH, w - 40, itemH - 2);
+                bool sel = selectedIndex == realIdx;
+                string label;
+                GUIStyle style;
+
+                if (realIdx < names.Length)
+                {
+                    label = (sel ? "  ► " : "      ") + names[realIdx];
+                    style = sel ? selectedStyle : labelStyle;
+                }
+                else
+                {
+                    label = (sel ? "► " : "   ") + buttons[realIdx - names.Length];
+                    style = sel ? buttonSelectedStyle : buttonStyle;
+                }
+
+                GUI.Label(r, label, style);
             }
 
-            float btnY = y + 75 + names.Length * 30 + 5;
-            GUI.Label(new Rect(x + 20, btnY, w - 40, 20), "- - - - - - - - - - - - - - - - - -", hintStyle);
-            btnY += 25;
+            float bottomY = y + headerH + maxVisible * itemH;
 
-            for (int i = 0; i < buttons.Length; i++)
-            {
-                int globalIdx = names.Length + i;
-                bool sel = selectedIndex == globalIdx;
-                Rect r = new Rect(x + 20, btnY + i * 33, w - 40, 26);
-                GUI.Label(r, (sel ? "► " : "   ") + buttons[i], sel ? buttonSelectedStyle : buttonStyle);
-            }
+            if (scrollOffset + maxVisible < TotalItems)
+                GUI.Label(new Rect(x, bottomY, w, 16), "▼ scroll down", hintStyle);
 
-            btnY += buttons.Length * 33 + 5;
-            GUI.Label(new Rect(x + 20, btnY, w - 40, 20), "- - - - - - - - - - - - - - - - - -", hintStyle);
-            btnY += 20;
-            GUI.Label(new Rect(x, btnY, w, 25), "[ ↑↓ ] Navigation      [ ENTER ] Select", hintStyle);
+            GUI.Label(new Rect(x + 20, bottomY + 18, w - 40, 16), "- - - - - - - - - - - - - - - - - -", hintStyle);
+            GUI.Label(new Rect(x, bottomY + 36, w, 20), "[ ↑↓ ] Navigation      [ ENTER ] Select", hintStyle);
         }
     }
 }
