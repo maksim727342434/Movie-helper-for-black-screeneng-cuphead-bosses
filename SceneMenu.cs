@@ -48,6 +48,7 @@ namespace CupheadMod
             "scene_level_dice_palace_roulette",
             "scene_level_dice_palace_eight_ball",
             "scene_level_dice_palace_flying_memory",
+            "scene_level_flying_blimp",
         };
 
         private string[] names = {
@@ -70,6 +71,7 @@ namespace CupheadMod
             "Piroulette",
             "Mangosteen",
             "Mr. Chimes",
+            "Hilda Berg",
         };
 
         private string[] buttons = {
